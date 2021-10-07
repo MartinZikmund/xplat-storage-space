@@ -75,7 +75,7 @@ namespace XplatStorageSpace
             return Android.OS.Environment.MediaMounted.Equals(Android.OS.Environment.ExternalStorageState, StringComparison.OrdinalIgnoreCase);
         }
 
-        private static string formatSize(long size)
+        private static string formatSize(float size)
         {
             string suffix = null;
 
@@ -83,24 +83,23 @@ namespace XplatStorageSpace
             {
                 suffix = "KB";
                 size /= 1024;
-                if (size >= 1024)
-                {
-                    suffix = "MB";
-                    size /= 1024;
-                }
+                
+
             }
 
-            StringBuilder resultBuffer = new StringBuilder(size.ToString());
-
-            int commaOffset = resultBuffer.Length - 3;
-            while (commaOffset > 0)
+            if (size >= 1024)
             {
-                resultBuffer.Insert(commaOffset, ',');
-                commaOffset -= 3;
+                suffix = "MB";
+                size /= 1024;
             }
 
-            if (suffix != null) resultBuffer.Append(suffix);
-            return resultBuffer.ToString();
+            if (size >= 1024)
+            {
+                suffix = "GB";
+                size /= 1024;
+            }
+
+            return size.ToString() + " " + suffix;
         }
 
 #endif
